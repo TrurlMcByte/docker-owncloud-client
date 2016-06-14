@@ -1,8 +1,10 @@
-FROM fedora:23
+FROM alpine:latest
 
-ADD http://download.opensuse.org/repositories/isv:ownCloud:desktop/Fedora_23/isv:ownCloud:desktop.repo /etc/yum.repos.d/isv:ownCloud:desktop.repo
-RUN dnf install -y owncloud-client && dnf clean all
+RUN cp /etc/apk/repositories /etc/apk/repositories.orig \
+    && echo http://dl-4.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories \
+    && apk add --no-cache \
+        curl owncloud-client
 
 ADD startup.sh /startup.sh
 
-ENTRYPOINT [ "/startup.sh" ]
+CMD [ "/startup.sh" ]
