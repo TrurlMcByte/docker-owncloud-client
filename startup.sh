@@ -1,32 +1,30 @@
 #!/bin/bash
 
 #add hostuser so files will be written as this user instead of root
-useradd -d /home/$HOSTUSER -m $HOSTUSER
 
-SERVER=`echo $URL|sed "s/\// /g"|awk '{ print $2 }'`
+WORK_UID=${WORK_UID:-35}
+WORK_GID=${WORK_GID:-35}
 
-echo "machine $SERVER" > /home/$HOSTUSER/.netrc
-echo "	login $USER" >> /home/$HOSTUSER/.netrc
-echo "	password $PASSWORD" >> /home/$HOSTUSER/.netrc
+groupadd --gid $WORK_GID clouddata
+useradd  --uid $WORK_UID --gid $WORK_GID  -d /home/clouddata -m clouddata
 
-chown $HOSTUSER.$HOSTUSER /home/$HOSTUSER/.netrc
+if [ "$USER" -a  "$PASSWORD" ] ; then
+    SERVER=`echo $URL|sed "s/\// /g"|awk '{ print $2 }'`
+    echo "machine $SERVER" > /home/clouddata/.netrc
+    echo "	login $USER" >> /home/clouddata/.netrc
+    echo "	password $PASSWORD" >> /home/clouddata/.netrc
+fi
 
-chown -R $HOSTUSER.$HOSTUSER $LOCALDIR
+mkdir -p /home/clouddata/.local/share/data/ownCloud
+touch /home/clouddata/.local/share/data/ownCloud/cookies.db
 
-LOGFILE="/home/$HOSTUSER/oc.log"
-
+chown $WORK_UID.$WORK_GID /home/clouddata/.netrc
+chown -R $WORK_UID.$WORK_GID /home/clouddata/.local
+chown -R $WORK_UID.$WORK_GID $LOCALDIR
 
 while true
 do
     # Start sync
-    su $HOSTUSER -c "owncloudcmd --trust -n $LOCALDIR $URL >>$LOGFILE 2>&1"
-    
-    # do a kind of logrotate when logfile > 20000000 (~20MB)
-    LOGSIZE=`stat $LOGFILE |grep Size|awk '{ print $2}'`
-    # If logsize > ~20MB, then zip it
-    if [ $LOGSIZE -ge 20000000 ] 
-      then 
-        gzip -f $LOGFILE 
-    fi
+    su clouddata -c "owncloudcmd --trust --non-interactive --silent -n $LOCALDIR $URL"
     sleep $INTERVAL
 done
