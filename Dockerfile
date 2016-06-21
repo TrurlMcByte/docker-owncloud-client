@@ -35,6 +35,8 @@ RUN apk add --no-cache --virtual .build-deps \
         -DCMAKE_INSTALL_SYSCONFDIR=/etc/owncloud-client \
     && make \
     && cp bin/owncloudcmd /usr/bin/owncloudcmd \
+    && mv src/libsync/libowncloudsync.so* /usr/lib/ \
+    && mv csync/src/libocsync.so* /usr/lib/ \
     && runDeps="$( \
         scanelf --needed --nobanner /usr/bin/owncloudcmd \
             | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
