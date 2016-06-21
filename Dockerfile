@@ -43,7 +43,8 @@ RUN apk add --no-cache --virtual .build-deps \
             | sort -u \
         )" \
     && apk add --no-cache --virtual .rundeps $runDeps \
-    && apk del --no-cache .build-deps
+    && apk del --no-cache .build-deps \
+    && rm -rf /usr/local/src
 
 ADD startup.sh /startup.sh
 
