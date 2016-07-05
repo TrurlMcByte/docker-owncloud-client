@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #add hostuser so files will be written as this user instead of root
-
+set -x
 WORK_UID=${WORK_UID:-82}
 WORK_GID=${WORK_GID:-82}
 
@@ -36,6 +36,6 @@ chown -R $WORK_UID.$WORK_GID $LOCALDIR
 while true
 do
     # Start sync
-    su clouddata -c "owncloudcmd --trust --non-interactive --silent -h -n $LOCALDIR $URL &> /home/clouddata/sync.log"
+    su clouddata -c "owncloudcmd --max-sync-retries 99 --trust --non-interactive --silent -h -n $LOCALDIR $URL &> /home/clouddata/sync.log"
     sleep $INTERVAL
 done
