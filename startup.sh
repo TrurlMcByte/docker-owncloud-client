@@ -27,6 +27,7 @@ touch /etc/ownCloud/sync-exclude.lst
 mkdir -p /home/clouddata/.local/share/data/ownCloud
 touch /home/clouddata/.local/share/data/ownCloud/cookies.db
 
+mkdir -p $LOCALDIR
 touch $LOCALDIR/exclude.lst
 chown $WORK_UID.$WORK_GID /home/clouddata/.netrc
 chown -R $WORK_UID.$WORK_GID /home/clouddata/.local
