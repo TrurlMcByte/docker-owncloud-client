@@ -32,6 +32,7 @@ touch $LOCALDIR/exclude.lst
 chown $WORK_UID.$WORK_GID /home/clouddata/.netrc
 chown -R $WORK_UID.$WORK_GID /home/clouddata/.local
 chown -R $WORK_UID.$WORK_GID $LOCALDIR
+chmod -R u+rw $LOCALDIR
 
 while true
 do
