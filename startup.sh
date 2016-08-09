@@ -114,7 +114,7 @@ do
         test "${HIDDEN}" = "yes" && H="-h"
         test -f  ${LOGDIR}/${CONF}_sync.log || touch ${LOGDIR}/${CONF}_sync.log
         chown $WORK_USER ${LOGDIR}/${CONF}_sync.log
-        su $WORK_USER -c "owncloudcmd --max-sync-retries 99 --trust --non-interactive --silent -n $H $LOCALDIR $URL &> ${LOGDIR}/${CONF}_sync.log"
+        su $WORK_USER -c "owncloudcmd --unsyncedfolders $LOCALDIR/exclude.lst --max-sync-retries 99 --trust --non-interactive --silent -n $H $LOCALDIR $URL &> ${LOGDIR}/${CONF}_sync.log"
         # ToDo: search for special tools for fixing permissons
         test "$POST_SCRIPT" && test -f $LOCALDIR/$POST_SCRIPT && su $WORK_USER -c "/bin/sh $LOCALDIR/$POST_SCRIPT 2>&1 >> ${LOGDIR}/${CONF}_sync.log"
         sleep $INTERVAL
