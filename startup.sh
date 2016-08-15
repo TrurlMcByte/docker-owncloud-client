@@ -31,6 +31,8 @@ mkdir -p /etc/ownCloud
 touch /etc/ownCloud/sync-exclude.lst
 
 for xconf in ${CONFDIR}/*.conf; do
+    WORK_USER=
+    WORK_GROUP=
     . $xconf
 
     test "$URL" || continue
