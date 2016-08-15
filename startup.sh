@@ -56,6 +56,7 @@ for xconf in ${CONFDIR}/*.conf; do
 
     if test -z "$SERVER"; then
         SERVER=`echo $URL|sed "s/\// /g"|awk '{ print $2 }'`
+        echo SERVER=${SERVER} >> $cconf
     fi
 
     # check if UID already used
@@ -91,7 +92,7 @@ for xconf in ${CONFDIR}/*.conf; do
     fi
 
     mkdir -p $USER_HOME/.local/share/data/ownCloud
-    chown -R $WORK_USER $USER_HOME/.local 
+    chown -R $WORK_USER $USER_HOME/.local
     touch $USER_HOME/.local/share/data/ownCloud/cookies.db
 
     mkdir -p $LOCALDIR
