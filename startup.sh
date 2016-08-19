@@ -29,6 +29,7 @@ mkdir -p /etc/owncloud-client
 touch /etc/owncloud-client/sync-exclude.lst
 mkdir -p /etc/ownCloud
 touch /etc/ownCloud/sync-exclude.lst
+rm -f ${LOGDIG}/*.gconf
 
 for xconf in ${CONFDIR}/*.conf; do
     WORK_USER=
