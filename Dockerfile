@@ -5,7 +5,7 @@ FROM alpine:latest
 #    && apk add --no-cache \
 #        curl owncloud-client
 
-ENV VERSION=2.2.2 \
+ENV VERSION=2.3.0 \
     QTKC_VERSION=0.7.0
 
 RUN apk add --no-cache --virtual .build-deps \
@@ -38,7 +38,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && mv src/libsync/libowncloudsync.so* /usr/lib/ \
     && mv csync/src/libocsync.so* /usr/lib/ \
     && runDeps="$( \
-        scanelf --needed --nobanner /usr/bin/owncloudcmd \
+        scanelf --needed --nobanner /usr/bin/owncloudcmd /usr/lib/libowncloudsync.so /usr/lib/libowncloudsync.so.$VERSION \
             | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
             | sort -u \
             | xargs -r apk info --installed \
