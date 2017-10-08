@@ -5,7 +5,7 @@ FROM alpine:latest
 #    && apk add --no-cache \
 #        curl owncloud-client
 
-ENV VERSION=2.3.0 \
+ENV VERSION=2.3.3 \
     QTKC_VERSION=0.7.0
 
 RUN apk add --no-cache --virtual .build-deps \
